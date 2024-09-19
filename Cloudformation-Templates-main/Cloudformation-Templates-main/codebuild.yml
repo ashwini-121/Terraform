@@ -1,0 +1,35 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Creating EC2 Instance with security group and S3 Bucket
+
+Resources:
+ Codebuild:
+  Type: AWS::CodeBuild::Project
+  Properties:
+    Name: cicdcodebuild
+    Description: Creating ec2 instance using code build
+    ServiceRole: arn:aws:iam::088285363738:role/codebuild_servicerole
+    LogsConfig:
+      CloudWatchLogs:
+        Status: ENABLED
+    Artifacts:
+      Type: no_artifacts
+    Environment:
+      Type: LINUX_CONTAINER
+      ComputeType: BUILD_GENERAL1_SMALL
+      Image: aws/codebuild/java:openjdk-8
+    Source:
+      Auth:
+       Type: OAUTH
+      Location: https://github.com/yaswanth000/Cloudformation-Templates
+      Type: GITHUB
+    TimeoutInMinutes: 30
+    # VpcConfig:
+    #   SecurityGroupIds: 
+    #    - sg-05f5edce3f357f202
+    #   Subnets: 
+    #    - subnet-0c3e0fd92fa47bd30
+    #   VpcId: "vpc-04b240756e515b6cc"
+    Tags:
+      - Key: Key1
+        Value: Value1
